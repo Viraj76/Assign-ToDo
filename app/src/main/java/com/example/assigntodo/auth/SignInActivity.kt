@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.example.assigntodo.BossMainActivity
 import com.example.assigntodo.EmployeeMainActivity
 import com.example.assigntodo.databinding.ActivitySignInBinding
+import com.example.assigntodo.utils.Config
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -34,6 +35,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun loggingUser() {
+        Config.showDialog(this)
         firebaseAuth = FirebaseAuth.getInstance()
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
@@ -63,14 +65,16 @@ class SignInActivity : AppCompatActivity() {
                                     }
                                 }
                                 if(existedClientId == currentUserId) {
+                                    Config.hideDialog()
+                                    Toast.makeText(this@SignInActivity, "Signed In Successfully!", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this@SignInActivity, EmployeeMainActivity::class.java)
                                     startActivity(intent)
 
-                                    Toast.makeText(this@SignInActivity, "Signed In Successfully!", Toast.LENGTH_SHORT).show()
                                 }
                             }
                             override fun onCancelled(error: DatabaseError) {
-                                TODO("Not yet implemented")
+                                Config.hideDialog()
+                                Toast.makeText(this@SignInActivity, error.message.toString(), Toast.LENGTH_SHORT).show()
                             }
                         })
 
@@ -85,14 +89,14 @@ class SignInActivity : AppCompatActivity() {
                                     }
                                 }
                                 if( existedContractorId== currentUserId){
+                                    Config.hideDialog()
+                                    Toast.makeText(this@SignInActivity, "Signed In Successfully!", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this@SignInActivity, BossMainActivity::class.java)
                                     startActivity(intent)
-
-                                    Toast.makeText(this@SignInActivity, "Signed In Successfully!", Toast.LENGTH_SHORT).show()
                                 }
                             }
                             override fun onCancelled(databaseError: DatabaseError) {
-                                TODO("Not yet implemented")
+                                Toast.makeText(this@SignInActivity, databaseError.message, Toast.LENGTH_SHORT).show()
                             }
                         })
                     }
