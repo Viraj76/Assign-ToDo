@@ -69,7 +69,7 @@ class SignInActivity : AppCompatActivity() {
                                     Toast.makeText(this@SignInActivity, "Signed In Successfully!", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this@SignInActivity, EmployeeMainActivity::class.java)
                                     startActivity(intent)
-
+                                    finish()
                                 }
                             }
                             override fun onCancelled(error: DatabaseError) {
@@ -93,6 +93,7 @@ class SignInActivity : AppCompatActivity() {
                                     Toast.makeText(this@SignInActivity, "Signed In Successfully!", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this@SignInActivity, BossMainActivity::class.java)
                                     startActivity(intent)
+                                    finish()
                                 }
                             }
                             override fun onCancelled(databaseError: DatabaseError) {

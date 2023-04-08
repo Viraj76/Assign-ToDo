@@ -10,6 +10,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.assigntodo.BossMainActivity
 import com.example.assigntodo.R
 import com.example.assigntodo.databinding.ActivitySignUpBinding
 import com.example.assigntodo.models.Boss
@@ -151,13 +152,19 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 }
     }
-
-
     private fun storingUserTypeInSharedReferences(checkedId: Int) {
         val radioButton = findViewById<RadioButton>(checkedId)
         val sharedPref = getSharedPreferences("MyPrefs", MODE_PRIVATE)
         val editor = sharedPref.edit()
         editor.putString("user_preference", radioButton.text.toString())
         editor.apply()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if(currentUser!= null){
+            startActivity(Intent(this,BossMainActivity::class.java))
+        }
     }
 }
