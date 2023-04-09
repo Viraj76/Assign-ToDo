@@ -24,9 +24,12 @@ class WorkActivity : AppCompatActivity() {
                 startActivity(Intent(context,BossMainActivity::class.java))
             }
         }
+
         binding.fabAssignWork.setOnClickListener {
-            binding.tvBlank.visibility = View.GONE;
+//            binding.tvBlank.visibility = View.
+            startActivity(Intent(this,AssignActivity::class.java))
         }
+
     }
 
 }
