@@ -11,6 +11,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.assigntodo.BossMainActivity
+import com.example.assigntodo.EmployeeMainActivity
 import com.example.assigntodo.R
 import com.example.assigntodo.databinding.ActivitySignUpBinding
 import com.example.assigntodo.models.Boss
@@ -164,7 +165,11 @@ class SignUpActivity : AppCompatActivity() {
         super.onStart()
         val currentUser = FirebaseAuth.getInstance().currentUser
         if(currentUser!= null){
-            startActivity(Intent(this,BossMainActivity::class.java))
+            startActivity(Intent(this,EmployeeMainActivity::class.java))
         }
+        else{
+            startActivity(Intent(this,SignInActivity::class.java))
+        }
+
     }
 }
