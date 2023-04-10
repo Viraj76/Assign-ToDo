@@ -84,7 +84,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/etNotes"
+            android:id="@+id/etWorkDesc"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:layout_marginTop="10dp"
@@ -96,7 +96,7 @@
             android:textColorHint="@color/medium" />
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fbtnDone"
+        android:id="@+id/Done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
