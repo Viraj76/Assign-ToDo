@@ -8,7 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/etBackground"
+        app:cardElevation="@dimen/_5sdp"
+        android:outlineAmbientShadowColor="@color/hard"
+        app:cardBackgroundColor="@color/light6"
         app:cardCornerRadius="10dp">
         <ImageView
             android:id="@+id/cvOval"
@@ -30,8 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Notes"
-                android:textColor="@color/white"
-                android:fontFamily="@font/font_one"
+                android:textColor="@color/hard"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:textSize="25sp"/>
@@ -42,18 +43,32 @@
                 android:text="@string/dummy"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="10dp"
-                android:textColor="#B5C4C4"
-                android:fontFamily="@font/font_two"
+                android:textColor="#ffff"
                 android:textSize="20sp"/>
-            <TextView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:textColor="@color/medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Last Date-: "
+
+                    android:textStyle="bold"
+                    android:textSize="12sp"/>
+                <TextView
+
                 android:id="@+id/cvDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/_12_12_2012"
-                android:textColor="#F8F9F9"
+                android:text="12-12-2023"
+                android:textColor="@color/light1"
                 android:textStyle="bold"
-                android:fontFamily="@font/font_two"
                 android:textSize="12sp"/>
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

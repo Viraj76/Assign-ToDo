@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:listitem="@layout/emp_item_view"
-        android:background="@color/light6"
+        android:background="@color/light4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
