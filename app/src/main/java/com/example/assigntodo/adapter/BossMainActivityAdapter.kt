@@ -34,6 +34,7 @@ class BossMainActivityAdapter(val context: Context):RecyclerView.Adapter<BossMai
         holder.itemView.setOnClickListener {
             val intent  = Intent(context,WorkActivity::class.java)
             intent.putExtra("EmpName",empData.empName)
+            intent.putExtra("EmpId",empData.empId)
             context.startActivity(intent)
         }
     }
