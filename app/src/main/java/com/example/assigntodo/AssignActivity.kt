@@ -26,7 +26,10 @@ class AssignActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.greenOval.setImageResource(R.drawable.done)
 
-
+        binding.toolBar.apply {
+            title = "Assign Work"
+            setSupportActionBar(this)
+        }
 
 
         prioritySelection()

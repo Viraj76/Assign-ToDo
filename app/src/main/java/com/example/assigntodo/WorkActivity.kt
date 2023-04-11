@@ -29,18 +29,16 @@ class WorkActivity : AppCompatActivity() {
         Config.showDialog(this)
         prepareRvForWorksAdapter()
 
-        if(binding.rvWorks.isNotEmpty())  {
-            binding.tvBlank.visibility = View.GONE
-        }
         val empName = intent.getStringExtra("EmpName")
         val empId = intent.getStringExtra("EmpId")
 
-        binding.tvBlank.text = "No any work has been assigned to $empName"
+
         binding.workTb.apply {
             title = empName
             setSupportActionBar(this)
             setNavigationOnClickListener {
                 startActivity(Intent(context,BossMainActivity::class.java))
+                finish()
             }
         }
         showingAssignedWork(empId)
