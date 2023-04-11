@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/_7sdp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="@dimen/_7sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/cvOval"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@drawable/red_oval"
+                android:layout_margin="@dimen/_8sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_gravity="right"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="@dimen/_7sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="8dp">
+
+                <TextView
+                    android:id="@+id/cvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Notes"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:textColor="@color/hard"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Last Date-: "
+                        android:textColor="@color/medium"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/cvDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="12-12-2023"
+                        android:textColor="@color/light1"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+            >
+            <TextView
+                android:id="@+id/workDescT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Work Description :-"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:padding="@dimen/_1sdp"
+                android:textStyle="bold"
+                android:textSize="@dimen/_15ssp"
+                android:textColor="@color/medium"
+
+                />
+            <TextView
+                android:id="@+id/workDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_1sdp"
+                android:textColor="@color/medium"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:text="Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible."
+           />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

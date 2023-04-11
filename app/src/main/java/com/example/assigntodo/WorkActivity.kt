@@ -55,7 +55,7 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun prepareRvForWorksAdapter() {
-        worksAdapter = WorksAdapter()
+        worksAdapter = WorksAdapter(this)
         binding.rvWorks.apply {
             layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             adapter = worksAdapter

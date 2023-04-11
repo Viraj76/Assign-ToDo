@@ -170,6 +170,6 @@ class SignUpActivity : AppCompatActivity() {
         else{
             startActivity(Intent(this,SignInActivity::class.java))
         }
-
     }
+
 }

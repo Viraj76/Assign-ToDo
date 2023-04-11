@@ -6,4 +6,6 @@ data class AssignedWork(
     val workDesc : String? = null,
     val workPriority : String? = null,
     val workLastDate : String? = null,
-)
+    var isExpandable : Boolean=false,
+
+    )

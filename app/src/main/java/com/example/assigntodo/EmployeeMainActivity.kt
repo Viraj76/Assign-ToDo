@@ -72,7 +72,7 @@ class EmployeeMainActivity : AppCompatActivity() {
 
 
     private fun prepareRvForMainActivity() {
-        worksAdapter = WorksAdapter()
+        worksAdapter = WorksAdapter(this)
         binding.workRV.apply {
             adapter = worksAdapter
         }

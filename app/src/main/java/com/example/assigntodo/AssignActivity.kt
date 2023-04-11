@@ -40,7 +40,7 @@ class AssignActivity : AppCompatActivity() {
     private fun prioritySelection() {
         binding.apply {
             greenOval.setOnClickListener {
-                priority = "1"
+                priority = "3"
                 binding.greenOval.setImageResource(R.drawable.done)
                 binding.yellowOval.setImageResource(0)
                 binding.redOval.setImageResource(0)
@@ -52,7 +52,7 @@ class AssignActivity : AppCompatActivity() {
                 binding.redOval.setImageResource(0)
             }
             redOval.setOnClickListener {
-                priority = "3"
+                priority = "1"
                 binding.greenOval.setImageResource(0)
                 binding.yellowOval.setImageResource(0)
                 binding.redOval.setImageResource(R.drawable.done)
