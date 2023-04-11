@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.BoringLayout.make
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assigntodo.adapter.BossMainActivityAdapter
 import com.example.assigntodo.databinding.ActivityBossMainBinding
@@ -18,6 +19,7 @@ class BossMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBossMainBinding
     private lateinit var bossMainActivityAdapter: BossMainActivityAdapter
     private lateinit var empDb : DatabaseReference
+    private lateinit var toolBar:Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBossMainBinding.inflate(layoutInflater)

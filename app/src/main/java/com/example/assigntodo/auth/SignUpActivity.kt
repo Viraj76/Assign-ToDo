@@ -161,15 +161,5 @@ class SignUpActivity : AppCompatActivity() {
         editor.apply()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if(currentUser!= null){
-            startActivity(Intent(this,EmployeeMainActivity::class.java))
-        }
-        else{
-            startActivity(Intent(this,SignInActivity::class.java))
-        }
-    }
 
 }

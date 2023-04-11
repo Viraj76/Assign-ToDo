@@ -40,7 +40,7 @@
         android:layout_marginHorizontal="@dimen/_16sdp"
         app:boxStrokeColor="@color/hard"
         app:hintTextColor="@color/black"
-        android:layout_marginTop="@dimen/_70sdp"
+        android:layout_marginTop="@dimen/_40sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:endIconMode="clear_text"
         app:endIconTint="@color/hard"

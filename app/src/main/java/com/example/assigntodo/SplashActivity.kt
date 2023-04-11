@@ -27,6 +27,7 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
           if(currentUser == null){
               startActivity(Intent(this,SignUpActivity::class.java))
+              finish()
           }
           else{
               // just current user id who wants to log in
@@ -71,7 +72,6 @@ class SplashActivity : AppCompatActivity() {
                       }
                       if( existedContractorId== currentUserId){
                           Config.hideDialog()
-
                           val intent = Intent(this@SplashActivity, BossMainActivity::class.java)
                           startActivity(intent)
                           finish()

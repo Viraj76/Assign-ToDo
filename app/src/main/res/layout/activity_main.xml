@@ -5,6 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EmployeeMainActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/hard"
+        android:elevation="@dimen/_4sdp"
+        app:titleTextColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        >
+<!--        <ImageView-->
+<!--            android:id="@+id/ivLogout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/logout_white_24dp"-->
+<!--            android:layout_gravity="end"-->
+<!--            app:tint="@color/white"-->
+<!--            android:layout_marginEnd="@dimen/_23sdp"-->
+<!--            />-->
+    </androidx.appcompat.widget.Toolbar>
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/workRV"
     android:layout_width="0dp"
@@ -12,7 +35,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+   app:layout_constraintTop_toBottomOf="@id/toolBar"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     />
 </androidx.constraintlayout.widget.ConstraintLayout>
