@@ -11,8 +11,11 @@ import com.example.assigntodo.R
 import com.example.assigntodo.databinding.WorkEachItemBinding
 import com.example.assigntodo.databinding.WorkItemViewBinding
 import com.example.assigntodo.models.AssignedWork
+import kotlin.reflect.KFunction0
 
-class WorksAdapter(val  context: Context) : RecyclerView.Adapter<WorksAdapter.WorksViewHolder>() {
+class WorksAdapter(val context: Context, private val onCompletedClicked: KFunction0<Unit>?) : RecyclerView.Adapter<WorksAdapter.WorksViewHolder>() {
+
+
     private var worksList  = ArrayList<AssignedWork>()
     fun setWorkList(worksList:ArrayList<AssignedWork>){
         this.worksList = worksList
@@ -28,10 +31,11 @@ class WorksAdapter(val  context: Context) : RecyclerView.Adapter<WorksAdapter.Wo
         val work = worksList[position]
         holder.binding.apply {
             cvTitle.text = work.workTitle
-//            cvSubtitle.text = work.workDesc
             cvDate.text = work.workLastDate
             workDesc.text = work.workDesc
-
+            workDone.setOnClickListener {
+                onCompletedClicked?.let { it1 -> it1() }
+            }
         }
         when(work.workPriority){
             "1"->
@@ -54,6 +58,7 @@ class WorksAdapter(val  context: Context) : RecyclerView.Adapter<WorksAdapter.Wo
         val isExpandable: Boolean = work.isExpandable
         holder.binding.workDesc.visibility = if(isExpandable) View.VISIBLE else View.GONE
         holder.binding.workDescT.visibility = if(isExpandable) View.VISIBLE else View.GONE
+        holder.binding.workDone.visibility = if(isExpandable) View.VISIBLE else View.GONE
         holder.binding.constraintLayout.setOnClickListener {
             isAnyItemExpanded(position)
             work.isExpandable = !work.isExpandable
@@ -78,6 +83,8 @@ class WorksAdapter(val  context: Context) : RecyclerView.Adapter<WorksAdapter.Wo
     ) {
         if(payloads.isNotEmpty() && payloads[0]==0) {
             holder.binding.workDesc.visibility = View.GONE
+            holder.binding.workDone.visibility = View.GONE
+            holder.binding.workDescT.visibility = View.GONE
         }
         else{
             super.onBindViewHolder(holder, position, payloads)

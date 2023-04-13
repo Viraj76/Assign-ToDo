@@ -1,12 +1,8 @@
 package com.example.assigntodo
 
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assigntodo.adapter.WorksAdapter
 import com.example.assigntodo.databinding.ActivityWorkBinding
@@ -53,7 +49,7 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun prepareRvForWorksAdapter() {
-        worksAdapter = WorksAdapter(this)
+        worksAdapter = WorksAdapter(this,null)
         binding.rvWorks.apply {
             layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             adapter = worksAdapter

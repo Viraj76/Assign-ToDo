@@ -8,6 +8,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.assigntodo.adapter.WorksAdapter
 import com.example.assigntodo.auth.SignInActivity
 import com.example.assigntodo.databinding.ActivityMainBinding
@@ -35,7 +37,9 @@ class EmployeeMainActivity : AppCompatActivity() {
 
         prepareRvForMainActivity()
         showingWorksOfEmp()
+
     }
+
 
     private fun showingWorksOfEmp() {
         Config.showDialog(this)
@@ -59,8 +63,9 @@ class EmployeeMainActivity : AppCompatActivity() {
                                                     .toString()
                                             )
                                         }
-                                        worksAdapter.setWorkList(empWork)
                                         Config.hideDialog()
+                                        worksAdapter.setWorkList(empWork)
+
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {
@@ -73,6 +78,8 @@ class EmployeeMainActivity : AppCompatActivity() {
                                     }
 
                                 })
+                        } else {
+                            Config.hideDialog()
                         }
                     }
                 }
@@ -88,9 +95,8 @@ class EmployeeMainActivity : AppCompatActivity() {
 
     }
 
-
     private fun prepareRvForMainActivity() {
-        worksAdapter = WorksAdapter(this)
+        worksAdapter = WorksAdapter(this,::onCompletedClicked)
         binding.workRV.apply {
             adapter = worksAdapter
         }
@@ -110,13 +116,13 @@ class EmployeeMainActivity : AppCompatActivity() {
                 builder
                     .setTitle("Log Out")
                     .setMessage("Are you sure you want to log out?")
-                    .setPositiveButton("Yes"){dialogInterface,which->
+                    .setPositiveButton("Yes") { dialogInterface, which ->
                         FirebaseAuth.getInstance().signOut()
-                        val intent = Intent(this,SignInActivity::class.java)
+                        val intent = Intent(this, SignInActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
-                    .setNegativeButton("No"){dialogInterface, which->
+                    .setNegativeButton("No") { dialogInterface, which ->
                         alertDialog.dismiss()
                     }
                     .show()
@@ -126,5 +132,20 @@ class EmployeeMainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
+    
+    private fun onCompletedClicked(){
+        val builder = AlertDialog.Builder(this@EmployeeMainActivity)
+        val alertDialog = builder.create()
+        builder
+            .setTitle("Log Out")
+            .setMessage("Are you sure you want to log out?")
+            .setPositiveButton("Yes") { dialogInterface, which ->
+                Toast.makeText(this@EmployeeMainActivity,"Delete It",Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("No") { dialogInterface, which ->
+                alertDialog.dismiss()
+            }
+            .show()
+            .setCancelable(false)
+    }
 }
