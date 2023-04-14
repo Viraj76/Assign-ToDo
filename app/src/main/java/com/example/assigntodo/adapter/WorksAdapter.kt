@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.assigntodo.R
 import com.example.assigntodo.databinding.WorkEachItemBinding
-import com.example.assigntodo.databinding.WorkItemViewBinding
 import com.example.assigntodo.models.AssignedWork
-import kotlin.reflect.KFunction0
 
-class WorksAdapter(val context: Context, private val onCompletedClicked: KFunction0<Unit>?) : RecyclerView.Adapter<WorksAdapter.WorksViewHolder>() {
+class WorksAdapter(
+    val context: Context,
+    val onCompletedClicked: ((AssignedWork) -> Unit)?=null,
+
+) : RecyclerView.Adapter<WorksAdapter.WorksViewHolder>() {
 
 
     private var worksList  = ArrayList<AssignedWork>()
@@ -34,7 +36,7 @@ class WorksAdapter(val context: Context, private val onCompletedClicked: KFuncti
             cvDate.text = work.workLastDate
             workDesc.text = work.workDesc
             workDone.setOnClickListener {
-                onCompletedClicked?.let { it1 -> it1() }
+                onCompletedClicked?.let { it1 -> it1(work) }
             }
         }
         when(work.workPriority){

@@ -8,8 +8,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.example.assigntodo.adapter.WorksAdapter
 import com.example.assigntodo.auth.SignInActivity
 import com.example.assigntodo.databinding.ActivityMainBinding
@@ -57,11 +55,6 @@ class EmployeeMainActivity : AppCompatActivity() {
                                         val empWork = ArrayList<AssignedWork>()
                                         for (works in snapshot.children) {
                                             empWork.add(works.getValue(AssignedWork::class.java)!!)
-                                            Log.d(
-                                                "ggg",
-                                                works.getValue(AssignedWork::class.java)!!
-                                                    .toString()
-                                            )
                                         }
                                         Config.hideDialog()
                                         worksAdapter.setWorkList(empWork)
@@ -132,20 +125,62 @@ class EmployeeMainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-    
-    private fun onCompletedClicked(){
+
+    private fun onCompletedClicked(work : AssignedWork){
         val builder = AlertDialog.Builder(this@EmployeeMainActivity)
         val alertDialog = builder.create()
         builder
             .setTitle("Log Out")
             .setMessage("Are you sure you want to log out?")
             .setPositiveButton("Yes") { dialogInterface, which ->
-                Toast.makeText(this@EmployeeMainActivity,"Delete It",Toast.LENGTH_SHORT).show()
+                deletingWork(work)
             }
             .setNegativeButton("No") { dialogInterface, which ->
                 alertDialog.dismiss()
             }
             .show()
             .setCancelable(false)
+    }
+
+    private fun deletingWork(work: AssignedWork) {
+        work.isExpandable = !work.isExpandable
+        Config.showDialog(this)
+        var getRoom = ""
+        val currentUser = FirebaseAuth.getInstance().currentUser?.uid
+        FirebaseDatabase.getInstance().getReference("Works")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (allWorks in snapshot.children) {
+                        if (allWorks.key!!.contains(currentUser!!)) {
+                            getRoom = allWorks.key!!.toString()
+                            FirebaseDatabase.getInstance().getReference("Works").child(getRoom)
+                                .addListenerForSingleValueEvent(object : ValueEventListener{
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        for(userWork in snapshot.children){
+                                            val getUserWork = userWork.getValue(AssignedWork::class.java)
+                                            if(getUserWork == work){
+                                                userWork.ref.removeValue()
+                                                Toast.makeText(this@EmployeeMainActivity,"Work, Completed!",Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    }
+                                    override fun onCancelled(error: DatabaseError) {
+                                        TODO("Not yet implemented")
+                                    }
+
+                                })
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Config.hideDialog()
+                    Toast.makeText(this@EmployeeMainActivity, error.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+            })
+
+
     }
 }

@@ -25,6 +25,7 @@ class WorkActivity : AppCompatActivity() {
         Config.showDialog(this)
         prepareRvForWorksAdapter()
 
+
         val empName = intent.getStringExtra("EmpName")
         val empId = intent.getStringExtra("EmpId")
 
@@ -49,7 +50,7 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun prepareRvForWorksAdapter() {
-        worksAdapter = WorksAdapter(this,null)
+        worksAdapter = WorksAdapter(this, null)
         binding.rvWorks.apply {
             layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             adapter = worksAdapter
