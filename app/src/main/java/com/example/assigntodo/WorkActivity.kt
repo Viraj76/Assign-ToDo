@@ -3,6 +3,9 @@ package com.example.assigntodo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assigntodo.adapter.WorksAdapter
 import com.example.assigntodo.databinding.ActivityWorkBinding
@@ -17,6 +20,8 @@ import com.google.firebase.database.ValueEventListener
 class WorkActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWorkBinding
     private lateinit var worksAdapter: WorksAdapter
+    private  var buttonText= "Unassigned"
+    private lateinit var empId : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWorkBinding.inflate(layoutInflater)
@@ -27,7 +32,7 @@ class WorkActivity : AppCompatActivity() {
 
 
         val empName = intent.getStringExtra("EmpName")
-        val empId = intent.getStringExtra("EmpId")
+         empId = intent.getStringExtra("EmpId").toString()
 
 
         binding.workTb.apply {
@@ -50,7 +55,7 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun prepareRvForWorksAdapter() {
-        worksAdapter = WorksAdapter(this, null)
+        worksAdapter = WorksAdapter(this, ::onButtonClicked,buttonText)
         binding.rvWorks.apply {
             layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             adapter = worksAdapter
@@ -62,8 +67,8 @@ class WorkActivity : AppCompatActivity() {
         val  workRoom = currentUserId + empId
         FirebaseDatabase.getInstance().getReference("Works").child(workRoom)
             .addValueEventListener(object : ValueEventListener{
-                var works  = arrayListOf<AssignedWork>()
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val works  = ArrayList<AssignedWork>()
                     for(work in snapshot.children){
                         val workss = work.getValue(AssignedWork::class.java)
                         works.add(workss!!)
@@ -72,6 +77,52 @@ class WorkActivity : AppCompatActivity() {
                     Config.hideDialog()
                 }
 
+                override fun onCancelled(error: DatabaseError) {
+                    Config.hideDialog()
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
+    private fun onButtonClicked(work : AssignedWork){
+        val builder = AlertDialog.Builder(this)
+        val alertDialog = builder.create()
+        builder
+            .setTitle("Log Out")
+            .setMessage("Are you sure you want to log out?")
+            .setPositiveButton("Yes") { dialogInterface, which ->
+                unassignedWork(work)
+            }
+            .setNegativeButton("No") { dialogInterface, which ->
+                alertDialog.dismiss()
+            }
+            .show()
+            .setCancelable(false)
+    }
+
+    private fun unassignedWork(work: AssignedWork) {
+        work.isExpandable = !work.isExpandable
+        Log.d("vvvv",work.toString())
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        val  workRoom = currentUserId + empId
+        FirebaseDatabase.getInstance().getReference("Works").child(workRoom)
+            .addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for(allWorks in snapshot.children){
+                        val userWork = allWorks.getValue(AssignedWork::class.java)
+                        Log.d("vvvv",work.toString())
+                        Log.d("vvvv",userWork.toString())
+                        if(userWork == work){
+                            allWorks.ref.removeValue()
+                                // Notify the adapter that the data set has changed
+//                                worksAdapter.notifyDataSetChanged()
+//
+                            Toast.makeText(this@WorkActivity,"Work Unassigned!",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
                 override fun onCancelled(error: DatabaseError) {
                     Config.hideDialog()
                     TODO("Not yet implemented")

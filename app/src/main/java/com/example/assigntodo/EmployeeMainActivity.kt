@@ -2,7 +2,6 @@ package com.example.assigntodo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -23,6 +22,7 @@ import com.google.firebase.database.ValueEventListener
 class EmployeeMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var worksAdapter: WorksAdapter
+    private var buttonText = "Completed"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -89,7 +89,7 @@ class EmployeeMainActivity : AppCompatActivity() {
     }
 
     private fun prepareRvForMainActivity() {
-        worksAdapter = WorksAdapter(this,::onCompletedClicked)
+        worksAdapter = WorksAdapter(this, ::onButtonClicked, buttonText)
         binding.workRV.apply {
             adapter = worksAdapter
         }
@@ -126,7 +126,7 @@ class EmployeeMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onCompletedClicked(work : AssignedWork){
+    private fun onButtonClicked(work : AssignedWork){
         val builder = AlertDialog.Builder(this@EmployeeMainActivity)
         val alertDialog = builder.create()
         builder

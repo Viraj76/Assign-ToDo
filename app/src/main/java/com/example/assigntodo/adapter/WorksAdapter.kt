@@ -13,11 +13,9 @@ import com.example.assigntodo.models.AssignedWork
 
 class WorksAdapter(
     val context: Context,
-    val onCompletedClicked: ((AssignedWork) -> Unit)?=null,
-
-) : RecyclerView.Adapter<WorksAdapter.WorksViewHolder>() {
-
-
+    private val onButtonClicked: ((AssignedWork) -> Unit)? = null,
+    private val buttonText: String
+    ) : RecyclerView.Adapter<WorksAdapter.WorksViewHolder>() {
     private var worksList  = ArrayList<AssignedWork>()
     fun setWorkList(worksList:ArrayList<AssignedWork>){
         this.worksList = worksList
@@ -32,11 +30,12 @@ class WorksAdapter(
     override fun onBindViewHolder(holder: WorksViewHolder, position: Int) {
         val work = worksList[position]
         holder.binding.apply {
+            workDone.text = buttonText
             cvTitle.text = work.workTitle
             cvDate.text = work.workLastDate
             workDesc.text = work.workDesc
             workDone.setOnClickListener {
-                onCompletedClicked?.let { it1 -> it1(work) }
+                onButtonClicked?.let { it1 -> it1(work) }
             }
         }
         when(work.workPriority){
