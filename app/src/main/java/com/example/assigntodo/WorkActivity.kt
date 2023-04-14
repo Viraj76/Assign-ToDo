@@ -51,7 +51,7 @@ class WorkActivity : AppCompatActivity() {
             intent.putExtra("EmpName",empName)
             startActivity(intent)
         }
-
+        Config.hideDialog()
     }
 
     private fun prepareRvForWorksAdapter() {

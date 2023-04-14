@@ -39,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent"
-
                 android:padding="@dimen/_7sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="8dp">
@@ -50,11 +49,20 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:text="Notes"
-                    android:layout_marginBottom="@dimen/_10sdp"
+
                     android:textColor="@color/hard"
-                    android:textSize="@dimen/_20ssp"
+                    android:textSize="@dimen/_17ssp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/cvSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="Notes"
+                    android:textColor="#99590D22"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
                 <LinearLayout
                     android:id="@+id/ll"
                     android:layout_width="wrap_content"

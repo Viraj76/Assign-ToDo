@@ -43,18 +43,21 @@ class AssignActivity : AppCompatActivity() {
     private fun prioritySelection() {
         binding.apply {
             greenOval.setOnClickListener {
+                Toast.makeText(this@AssignActivity,"Priority : Low",Toast.LENGTH_SHORT).show()
                 priority = "3"
                 binding.greenOval.setImageResource(R.drawable.done)
                 binding.yellowOval.setImageResource(0)
                 binding.redOval.setImageResource(0)
             }
             yellowOval.setOnClickListener {
+                Toast.makeText(this@AssignActivity,"Priority : Medium",Toast.LENGTH_SHORT).show()
                 priority = "2"
                 binding.greenOval.setImageResource(0)
                 binding.yellowOval.setImageResource(R.drawable.done)
                 binding.redOval.setImageResource(0)
             }
             redOval.setOnClickListener {
+                Toast.makeText(this@AssignActivity,"Priority : High",Toast.LENGTH_SHORT).show()
                 priority = "1"
                 binding.greenOval.setImageResource(0)
                 binding.yellowOval.setImageResource(0)

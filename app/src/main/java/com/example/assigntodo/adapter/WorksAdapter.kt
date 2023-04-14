@@ -34,6 +34,7 @@ class WorksAdapter(
             cvTitle.text = work.workTitle
             cvDate.text = work.workLastDate
             workDesc.text = work.workDesc
+            cvSubtitle.text = work.workSubTitle
             workDone.setOnClickListener {
                 onButtonClicked?.let { it1 -> it1(work) }
             }
