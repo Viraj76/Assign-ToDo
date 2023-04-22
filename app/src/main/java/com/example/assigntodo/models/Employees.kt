@@ -6,6 +6,7 @@ data class Employees(
     val empEmail : String? = null,
     val empPassword : String? = null,
     val empImage : String? = null,
+    val fcmToken : String ? = null
 )
 
 

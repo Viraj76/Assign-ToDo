@@ -27,7 +27,7 @@ class WorkActivity : AppCompatActivity() {
         binding = ActivityWorkBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Config.showDialog(this)
+
         prepareRvForWorksAdapter()
 
 
@@ -51,7 +51,7 @@ class WorkActivity : AppCompatActivity() {
             intent.putExtra("EmpName",empName)
             startActivity(intent)
         }
-        Config.hideDialog()
+
     }
 
     private fun prepareRvForWorksAdapter() {
@@ -63,6 +63,7 @@ class WorkActivity : AppCompatActivity() {
     }
 
     private fun showingAssignedWork(empId: String?) {
+        Config.showDialog(this)
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         val  workRoom = currentUserId + empId
         FirebaseDatabase.getInstance().getReference("Works").child(workRoom)
@@ -88,17 +89,21 @@ class WorkActivity : AppCompatActivity() {
     private fun onButtonClicked(work : AssignedWork){
         val builder = AlertDialog.Builder(this)
         val alertDialog = builder.create()
-        builder
-            .setTitle("Log Out")
-            .setMessage("Are you sure you want to log out?")
-            .setPositiveButton("Yes") { dialogInterface, which ->
+        builder.apply {
+            setTitle("Unassigned Work")
+            setIcon(R.drawable.ic_baseline_cancel_24)
+            setMessage("Are you sure you want to unassigned this work?")
+            setPositiveButton("Yes") { dialogInterface, which ->
                 unassignedWork(work)
             }
-            .setNegativeButton("No") { dialogInterface, which ->
+            setNegativeButton("No") { dialogInterface, which ->
                 alertDialog.dismiss()
             }
-            .show()
-            .setCancelable(false)
+            show()
+            setCancelable(false)
+        }
+
+
     }
 
     private fun unassignedWork(work: AssignedWork) {

@@ -21,7 +21,6 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
         hidingActionAndStatusBar()
         val currentUser = FirebaseAuth.getInstance().currentUser
         Handler(Looper.getMainLooper()).postDelayed({
@@ -37,8 +36,7 @@ class SplashActivity : AppCompatActivity() {
               var existedContractorId = "random"
 
               val clientDatabaseReference = FirebaseDatabase.getInstance().getReference("Employees")
-              clientDatabaseReference.addListenerForSingleValueEvent(object :
-                  ValueEventListener {
+              clientDatabaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
                   override fun onDataChange(snapshot: DataSnapshot) {
                       for(childrenSnapshot in snapshot.children){
                           val clientsIds = childrenSnapshot.child("empId").value.toString()
@@ -82,7 +80,6 @@ class SplashActivity : AppCompatActivity() {
                   }
               })
           }
-
         },1000)
 
     }

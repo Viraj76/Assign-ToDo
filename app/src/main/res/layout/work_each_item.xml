@@ -7,12 +7,10 @@
     app:cardCornerRadius="@dimen/_7sdp"
     app:cardUseCompatPadding="true"
     app:cardElevation="@dimen/_7sdp">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:padding="@dimen/_5sdp"
         android:layout_height="wrap_content">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"

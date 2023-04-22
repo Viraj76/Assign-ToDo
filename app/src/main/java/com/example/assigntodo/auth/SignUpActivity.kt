@@ -17,9 +17,11 @@ import com.example.assigntodo.databinding.ActivitySignUpBinding
 import com.example.assigntodo.models.Boss
 import com.example.assigntodo.models.Employees
 import com.example.assigntodo.utils.Config
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 
 class SignUpActivity : AppCompatActivity() {
@@ -106,32 +108,50 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun storingUserData(image: Uri?) {
-        val name = binding.etName.text.toString()
-        val email = binding.etEmail.text.toString()
-        val password = binding.etPassword.text.toString()
-        val confirmPassword = binding.etConfirmPassword.text.toString()
-        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
-        userPreferences = sharedPreferences.getString("user_preference","")
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->     //first generating the token and store it to the respective user database
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+            // Get new FCM registration token
+            val token = task.result
+            val name = binding.etName.text.toString()
+            val email = binding.etEmail.text.toString()
+            val password = binding.etPassword.text.toString()
+            val confirmPassword = binding.etConfirmPassword.text.toString()
 
-        if(userPreferences.equals("Employee")){
-                    databaseReference = FirebaseDatabase.getInstance().getReference("Employees")
-                    firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener { task->
-                        if(task.isSuccessful){
+            sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+            userPreferences = sharedPreferences.getString("user_preference", "")
+
+            if (userPreferences.equals("Employee")) {
+                databaseReference = FirebaseDatabase.getInstance().getReference("Employees")
+                firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
                             Config.hideDialog()
-                            Toast.makeText(this,"Signed Up Successfully!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Signed Up Successfully!", Toast.LENGTH_SHORT)
+                                .show()
                             val intent = Intent(this, SignInActivity::class.java)
                             startActivity(intent)
+                            finish()
                             val uId = task.result.user?.uid.toString()
-                            val userClient = Employees(empId = uId, empName = name, empEmail = email, empPassword = password, empImage = image.toString())
+                            val userClient = Employees(
+                                empId = uId,
+                                empName = name,
+                                empEmail = email,
+                                empPassword = password,
+                                empImage = image.toString(),
+                                fcmToken = token
+                            )
                             databaseReference.child(uId).setValue(userClient)
 
-                        }
-                        else{
+                        } else {
                             Config.hideDialog()
-                            Toast.makeText(this,task.exception.toString(), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
-                }
+            }
+
 
         if(userPreferences.equals("Boss")){
                     databaseReference = FirebaseDatabase.getInstance().getReference("Bosses")
@@ -141,8 +161,9 @@ class SignUpActivity : AppCompatActivity() {
                             Toast.makeText(this,"Signed Up Successfully!", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, SignInActivity::class.java)
                             startActivity(intent)
+                            finish()
                             val uId = task.result.user?.uid.toString()
-                            val userContractor = Boss(bossId = uId, bossName = name, bossEmail = email, bossPassword = password, bossImage = image.toString())
+                            val userContractor = Boss(bossId = uId, bossName = name, bossEmail = email, bossPassword = password, bossImage = image.toString(), fcmToken = token)
 //                            databaseReference.child(name).setValue(userContractor)
                             databaseReference.child(uId).setValue(userContractor)
                         }
@@ -152,6 +173,7 @@ class SignUpActivity : AppCompatActivity() {
                         }
                     }
                 }
+        })
     }
     private fun storingUserTypeInSharedReferences(checkedId: Int) {
         val radioButton = findViewById<RadioButton>(checkedId)

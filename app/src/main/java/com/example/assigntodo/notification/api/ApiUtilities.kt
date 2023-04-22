@@ -1,4 +1,5 @@
-package com.example.datingapp.notification.api
+package com.example.assigntodo.notification.api
+
 
 
 import retrofit2.Retrofit
@@ -12,6 +13,5 @@ object ApiUtilities {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiInterface::class.java)
-
     }
 }

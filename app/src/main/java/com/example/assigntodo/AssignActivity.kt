@@ -7,8 +7,19 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.assigntodo.databinding.ActivityAssignBinding
 import com.example.assigntodo.models.AssignedWork
+import com.example.assigntodo.models.Boss
+import com.example.assigntodo.models.Employees
+import com.example.assigntodo.notification.NotificationData
+import com.example.assigntodo.notification.PushNotification
+import com.example.assigntodo.notification.api.ApiUtilities
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,6 +77,8 @@ class AssignActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun workAssigned() {
         binding.apply {
             val workTitle = etTitle.text.toString()
@@ -86,6 +99,7 @@ class AssignActivity : AppCompatActivity() {
                     .setValue(assignedWork)
                     .addOnCompleteListener {
                         if(it.isSuccessful){
+                            sendNotification(workTitle)
                             Toast.makeText(this@AssignActivity,"Work has been assigned",Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@AssignActivity,WorkActivity::class.java)
                             intent.putExtra("EmpId",empId)
@@ -102,10 +116,53 @@ class AssignActivity : AppCompatActivity() {
                     }
             }
             }
-
     }
 
 
+    private fun sendNotification(workTitle: String) {
+        FirebaseDatabase.getInstance().getReference("Employees").child(empId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val receiverData = snapshot.getValue(Employees::class.java)
+                    if(snapshot.exists()){
+                        FirebaseDatabase.getInstance().getReference("Bosses").child(currentUserId)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val senderUser = snapshot.getValue(Boss::class.java)
+                                    val notificationData = PushNotification(NotificationData("Work Assigned by ${senderUser?.bossName}!!",workTitle), receiverData!!.fcmToken!!)
+                                    ApiUtilities.api.sendNotification(notificationData).enqueue(object :
+                                        Callback<PushNotification> {
+                                        override fun onResponse(
+                                            call: Call<PushNotification>,
+                                            response: Response<PushNotification>
+                                        ) {
+                                            if(response.isSuccessful){
+                                                Toast.makeText(this@AssignActivity,"Notification Sent", Toast.LENGTH_SHORT).show()
+                                            }
+                                            else
+                                                Toast.makeText(this@AssignActivity,response.errorBody().toString(), Toast.LENGTH_SHORT).show()
+                                        }
+
+                                        override fun onFailure(call: Call<PushNotification>, t: Throwable) {
+                                            Toast.makeText(this@AssignActivity,"Something went wrong", Toast.LENGTH_SHORT).show()
+                                        }
+
+                                    })
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+
+                            })
+
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@AssignActivity,error.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
     private fun userSelectingDate() {
         val myCalender = Calendar.getInstance()
         val datePicker = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->

@@ -97,15 +97,21 @@ class SignInActivity : AppCompatActivity() {
                                 }
                             }
                             override fun onCancelled(databaseError: DatabaseError) {
+                                Config.hideDialog()
                                 Toast.makeText(this@SignInActivity, databaseError.message, Toast.LENGTH_SHORT).show()
                             }
                         })
                     }
                     else{
+                        Config.hideDialog()
                         Toast.makeText(this, task.exception?.message.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
         }
-        else Toast.makeText(this, "Empty fields are not allowed", Toast.LENGTH_SHORT).show()
+
+        else {
+            Config.hideDialog()
+            Toast.makeText(this, "Empty fields are not allowed", Toast.LENGTH_SHORT).show()
+        }
     }
 }

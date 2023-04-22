@@ -1,14 +1,16 @@
-package com.example.datingapp.notification.api
+package com.example.assigntodo.notification.api
 
-import com.example.datingapp.notification.PushNotification
-import retrofit2.Call
+import com.example.assigntodo.notification.PushNotification
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.Call
 
 interface ApiInterface {
-
-    @Headers("Content-Type: application/json","Authorization: key=AAAAmoqx1Ss:APA91bHE0v189BLfmjf7BQghnuCzxCyGKFntQ_5BqDV7oZNu9teE__Mw1n7u79ErV03Vt7CKhCw7jDsSpVGb10W3s_iv_nRPgPcno6Xt3agDAW3XD2u8x0SNZdTeoJJoELOy9N0GsTzl")
+    @Headers(
+        "Content-Type: application/json",
+        "Authorization: key=AAAAa7SiN7g:APA91bFjA8mIJT0bktjjCgZnRJOvecf9QOXX2tqhw7WZ7lWTGNokmLJGG9yF2xd-kiqBvDMAiydp-UKR4XsnJxN9p3GvIw0hLvP1CblNE6mkLJxTQ2bGzwG5__vqz0SPb4X-C7lsCL3h"
+    )
     @POST("fcm/send")
-    fun sendNotification(@Body notification:PushNotification) : Call<PushNotification>
+    fun sendNotification(@Body notification: PushNotification): Call<PushNotification>
 }

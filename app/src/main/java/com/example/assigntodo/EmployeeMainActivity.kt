@@ -11,12 +11,20 @@ import com.example.assigntodo.adapter.WorksAdapter
 import com.example.assigntodo.auth.SignInActivity
 import com.example.assigntodo.databinding.ActivityMainBinding
 import com.example.assigntodo.models.AssignedWork
+import com.example.assigntodo.models.Boss
+import com.example.assigntodo.models.Employees
+import com.example.assigntodo.notification.NotificationData
+import com.example.assigntodo.notification.PushNotification
+import com.example.assigntodo.notification.api.ApiUtilities
 import com.example.assigntodo.utils.Config
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class EmployeeMainActivity : AppCompatActivity() {
@@ -130,16 +138,65 @@ class EmployeeMainActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this@EmployeeMainActivity)
         val alertDialog = builder.create()
         builder
-            .setTitle("Log Out")
-            .setMessage("Are you sure you want to log out?")
+            .setTitle("Completed Work")
+            .setIcon(R.drawable.check_circle_black_24dp)
+            .setMessage("Are you sure you completed this work?")
             .setPositiveButton("Yes") { dialogInterface, which ->
                 deletingWork(work)
+                sendNotification(work.workTitle)
             }
             .setNegativeButton("No") { dialogInterface, which ->
                 alertDialog.dismiss()
             }
             .show()
             .setCancelable(false)
+
+    }
+
+    val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+    private fun sendNotification(workTitle: String?) {
+        FirebaseDatabase.getInstance().getReference("Bosses")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val bossData = snapshot.getValue(Boss::class.java)
+                    if(snapshot.exists()){
+                        FirebaseDatabase.getInstance().getReference("Employees").child(currentUserId!!)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val senderUser = snapshot.getValue(Employees::class.java)
+                                    val notificationData = PushNotification(NotificationData("Work Completed by ${senderUser?.empName}!!",workTitle!!), bossData!!.fcmToken!!)
+                                    ApiUtilities.api.sendNotification(notificationData).enqueue(object :
+                                        Callback<PushNotification> {
+                                        override fun onResponse(
+                                            call: Call<PushNotification>,
+                                            response: Response<PushNotification>
+                                        ) {
+                                            if(response.isSuccessful){
+                                                Toast.makeText(this@EmployeeMainActivity,"Notification Sent", Toast.LENGTH_SHORT).show()
+                                            }
+                                            else
+                                                Toast.makeText(this@EmployeeMainActivity,response.errorBody().toString(), Toast.LENGTH_SHORT).show()
+                                        }
+
+                                        override fun onFailure(call: Call<PushNotification>, t: Throwable) {
+                                            Toast.makeText(this@EmployeeMainActivity,"Something went wrong", Toast.LENGTH_SHORT).show()
+                                        }
+
+                                    })
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+
+                            })
+
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@EmployeeMainActivity,error.message, Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     private fun deletingWork(work: AssignedWork) {

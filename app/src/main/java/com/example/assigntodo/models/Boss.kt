@@ -6,5 +6,5 @@ data class Boss(
     val bossEmail : String? = null,
     val bossPassword : String? = null,
     val bossImage : String? = null,
-
+    val fcmToken : String ? = null
 )
