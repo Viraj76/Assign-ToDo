@@ -164,7 +164,7 @@ class EmployeeMainActivity : AppCompatActivity() {
                         val bossData = snapshot.getValue(Boss::class.java)
                         Log.d("hhh",bossData.toString())
                         val notificationData = PushNotification(
-                            NotificationData("Work Completed", workTitle!!),
+                            NotificationData("WORK COMPLETED", workTitle!!),
                             bossData!!.fcmToken!!
                         )
                         ApiUtilities.api.sendNotification(notificationData)

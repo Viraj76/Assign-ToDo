@@ -12,7 +12,6 @@ import com.example.assigntodo.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlin.random.Random
-
 class MyFirebaseMessagingService: FirebaseMessagingService() {
     private val channelId = "viraj"
 
@@ -37,7 +36,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             .setSmallIcon(R.drawable.app_icon)
             .setAutoCancel(true)
             .setLargeIcon(largeIcon)
-            .setContentIntent(intent1)
+            .setContentIntent(null)
             .build()
         manager.notify(Random.nextInt(),notification)
     }

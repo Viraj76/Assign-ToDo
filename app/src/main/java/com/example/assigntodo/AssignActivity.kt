@@ -131,7 +131,7 @@ class AssignActivity : AppCompatActivity() {
                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     val senderUser = snapshot.getValue(Boss::class.java)
-                                    val notificationData = PushNotification(NotificationData("Work Assigned",workTitle), receiverData!!.fcmToken!!)
+                                    val notificationData = PushNotification(NotificationData("WORK ASSIGNED",workTitle), receiverData!!.fcmToken!!)
                                     ApiUtilities.api.sendNotification(notificationData).enqueue(object :
                                         Callback<PushNotification> {
                                         override fun onResponse(
