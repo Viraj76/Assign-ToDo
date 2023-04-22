@@ -41,13 +41,15 @@ class AssignActivity : AppCompatActivity() {
             title = "Assign Work"
             setSupportActionBar(this)
         }
-
-
+        currentUserId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         prioritySelection()
         userSelectingDate()
-
         binding.Done.setOnClickListener { workAssigned() }
-
+//        val bossIdShRef = getSharedPreferences("Boss Id", MODE_PRIVATE)
+//        bossIdShRef.edit().apply{
+//            putString("BossId",currentUserId)
+//            apply()
+//        }
     }
 
 
@@ -91,7 +93,7 @@ class AssignActivity : AppCompatActivity() {
             else if(binding.tvDate.text.toString() == "Last Date") Toast.makeText(this@AssignActivity,"Select a last date",Toast.LENGTH_SHORT).show()
             else{
                 val assignedWork = AssignedWork(workTitle,workSubTitle,workDesc,priority,date)
-                currentUserId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
                 empId = intent.getStringExtra("EmpId").toString()
                 val empName = intent.getStringExtra("EmpName")
                 workRoom = currentUserId + empId
@@ -129,7 +131,7 @@ class AssignActivity : AppCompatActivity() {
                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     val senderUser = snapshot.getValue(Boss::class.java)
-                                    val notificationData = PushNotification(NotificationData("Work Assigned by ${senderUser?.bossName}!!",workTitle), receiverData!!.fcmToken!!)
+                                    val notificationData = PushNotification(NotificationData("Work Assigned",workTitle), receiverData!!.fcmToken!!)
                                     ApiUtilities.api.sendNotification(notificationData).enqueue(object :
                                         Callback<PushNotification> {
                                         override fun onResponse(

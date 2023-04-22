@@ -2,6 +2,7 @@ package com.example.assigntodo
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -134,7 +135,7 @@ class EmployeeMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onButtonClicked(work : AssignedWork){
+    private fun onButtonClicked(work: AssignedWork) {
         val builder = AlertDialog.Builder(this@EmployeeMainActivity)
         val alertDialog = builder.create()
         builder
@@ -153,48 +154,54 @@ class EmployeeMainActivity : AppCompatActivity() {
 
     }
 
+//    val bossShPre = getSharedPreferences("Boss Id", MODE_PRIVATE)
+    val bossId = "7eJG7n8GgaMIcnOqVQ5Sc3evJ5q1"
     val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
     private fun sendNotification(workTitle: String?) {
-        FirebaseDatabase.getInstance().getReference("Bosses")
+        FirebaseDatabase.getInstance().getReference("Bosses").child(bossId)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val bossData = snapshot.getValue(Boss::class.java)
-                    if(snapshot.exists()){
-                        FirebaseDatabase.getInstance().getReference("Employees").child(currentUserId!!)
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    val senderUser = snapshot.getValue(Employees::class.java)
-                                    val notificationData = PushNotification(NotificationData("Work Completed by ${senderUser?.empName}!!",workTitle!!), bossData!!.fcmToken!!)
-                                    ApiUtilities.api.sendNotification(notificationData).enqueue(object :
-                                        Callback<PushNotification> {
-                                        override fun onResponse(
-                                            call: Call<PushNotification>,
-                                            response: Response<PushNotification>
-                                        ) {
-                                            if(response.isSuccessful){
-                                                Toast.makeText(this@EmployeeMainActivity,"Notification Sent", Toast.LENGTH_SHORT).show()
-                                            }
-                                            else
-                                                Toast.makeText(this@EmployeeMainActivity,response.errorBody().toString(), Toast.LENGTH_SHORT).show()
-                                        }
-
-                                        override fun onFailure(call: Call<PushNotification>, t: Throwable) {
-                                            Toast.makeText(this@EmployeeMainActivity,"Something went wrong", Toast.LENGTH_SHORT).show()
-                                        }
-
-                                    })
+                        val bossData = snapshot.getValue(Boss::class.java)
+                        Log.d("hhh",bossData.toString())
+                        val notificationData = PushNotification(
+                            NotificationData("Work Completed", workTitle!!),
+                            bossData!!.fcmToken!!
+                        )
+                        ApiUtilities.api.sendNotification(notificationData)
+                            .enqueue(object : Callback<PushNotification> {
+                                override fun onResponse(
+                                    call: Call<PushNotification>,
+                                    response: Response<PushNotification>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        Toast.makeText(
+                                            this@EmployeeMainActivity,
+                                            "Notification Sent",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else
+                                        Toast.makeText(
+                                            this@EmployeeMainActivity,
+                                            response.errorBody().toString(),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                 }
 
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
+                                override fun onFailure(call: Call<PushNotification>, t: Throwable) {
+                                    Toast.makeText(
+                                        this@EmployeeMainActivity,
+                                        "Something went wrong",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-
                             })
 
-                    }
+
                 }
+
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@EmployeeMainActivity,error.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EmployeeMainActivity, error.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
             })
     }
@@ -211,16 +218,22 @@ class EmployeeMainActivity : AppCompatActivity() {
                         if (allWorks.key!!.contains(currentUser!!)) {
                             getRoom = allWorks.key!!.toString()
                             FirebaseDatabase.getInstance().getReference("Works").child(getRoom)
-                                .addListenerForSingleValueEvent(object : ValueEventListener{
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onDataChange(snapshot: DataSnapshot) {
-                                        for(userWork in snapshot.children){
-                                            val getUserWork = userWork.getValue(AssignedWork::class.java)
-                                            if(getUserWork == work){
+                                        for (userWork in snapshot.children) {
+                                            val getUserWork =
+                                                userWork.getValue(AssignedWork::class.java)
+                                            if (getUserWork == work) {
                                                 userWork.ref.removeValue()
-                                                Toast.makeText(this@EmployeeMainActivity,"Work, Completed!",Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(
+                                                    this@EmployeeMainActivity,
+                                                    "Work, Completed!",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
                                             }
                                         }
                                     }
+
                                     override fun onCancelled(error: DatabaseError) {
                                         TODO("Not yet implemented")
                                     }

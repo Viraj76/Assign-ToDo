@@ -17,7 +17,11 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     private val channelId = "viraj"
 
     override fun onNewToken(token: String) {
-        super.onNewToken(token)
+        val tokenSharedPreferences = getSharedPreferences("NewToken", MODE_PRIVATE)
+        tokenSharedPreferences.edit().apply {
+            putString("newToken",token)
+            apply()
+        }
     }
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)

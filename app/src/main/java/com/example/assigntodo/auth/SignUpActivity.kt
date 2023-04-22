@@ -163,7 +163,12 @@ class SignUpActivity : AppCompatActivity() {
                             startActivity(intent)
                             finish()
                             val uId = task.result.user?.uid.toString()
-                            val userContractor = Boss(bossId = uId, bossName = name, bossEmail = email, bossPassword = password, bossImage = image.toString(), fcmToken = token)
+                            val userContractor = Boss(bossId = uId,
+                                bossName = name,
+                                bossEmail = email,
+                                bossPassword = password,
+                                bossImage = image.toString(),
+                                fcmToken = token)
 //                            databaseReference.child(name).setValue(userContractor)
                             databaseReference.child(uId).setValue(userContractor)
                         }
