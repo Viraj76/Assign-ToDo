@@ -1,5 +1,4 @@
 package com.example.assigntodo
-
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +15,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +32,6 @@ class SplashActivity : AppCompatActivity() {
               //initializing existedClientId and existedContractorId
               var existedClientId = "random"
               var existedContractorId = "random"
-
               val clientDatabaseReference = FirebaseDatabase.getInstance().getReference("Employees")
               clientDatabaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
                   override fun onDataChange(snapshot: DataSnapshot) {
@@ -52,12 +49,11 @@ class SplashActivity : AppCompatActivity() {
                           finish()
                       }
                   }
-                  override fun onCancelled(error: DatabaseError) {
+                  override fun onCancelled(error: DatabaseError){
                       Config.hideDialog()
                       Toast.makeText(this@SplashActivity, error.message.toString(), Toast.LENGTH_SHORT).show()
                   }
               })
-
               val contractorsRef = FirebaseDatabase.getInstance().getReference("Bosses")
               contractorsRef.addListenerForSingleValueEvent(object : ValueEventListener {
                   override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -81,7 +77,6 @@ class SplashActivity : AppCompatActivity() {
               })
           }
         },1000)
-
     }
     private fun hidingActionAndStatusBar() {
         supportActionBar?.hide()  //action  bar

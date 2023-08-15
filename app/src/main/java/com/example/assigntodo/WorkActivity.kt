@@ -27,13 +27,10 @@ class WorkActivity : AppCompatActivity() {
         binding = ActivityWorkBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         prepareRvForWorksAdapter()
 
-
         val empName = intent.getStringExtra("EmpName")
-         empId = intent.getStringExtra("EmpId").toString()
-
+        empId = intent.getStringExtra("EmpId").toString()
 
         binding.workTb.apply {
             title = empName
@@ -102,8 +99,6 @@ class WorkActivity : AppCompatActivity() {
             show()
             setCancelable(false)
         }
-
-
     }
 
     private fun unassignedWork(work: AssignedWork) {

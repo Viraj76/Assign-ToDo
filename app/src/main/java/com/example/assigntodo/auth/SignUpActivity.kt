@@ -33,13 +33,10 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private  var userPreferences: String?=null
     private lateinit var progressBar: ProgressBar
-
-
     private var imageUri : Uri? = null
     private val selectImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
         imageUri = it
         binding.ivUserImage.setImageURI(imageUri)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,13 +54,11 @@ class SignUpActivity : AppCompatActivity() {
             tvSignIn.setOnClickListener { goingToSignInActivity() }
         }
     }
-
     private fun goingToSignInActivity() {
         val intent = Intent(this, SignInActivity::class.java)
         startActivity(intent)
         finish()
     }
-
     private fun createNewUser() {
         Config.showDialog(this)
         val name = binding.etName.text.toString()
@@ -71,7 +66,11 @@ class SignUpActivity : AppCompatActivity() {
         val password = binding.etPassword.text.toString()
         val confirmPassword = binding.etConfirmPassword.text.toString()
         if(name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()){
-            if(password == confirmPassword){
+            if(imageUri == null) {
+                Config.hideDialog()
+                Toast.makeText(this,"Please select image", Toast.LENGTH_SHORT).show()
+            }
+            else if(password == confirmPassword){
                 uploadUserImage()
             }
             else {
@@ -87,11 +86,8 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun uploadUserImage() {
         val currentUserUid  = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        val storageReference= FirebaseStorage.getInstance().getReference("Profile")
-            .child(currentUserUid)
-            .child("Profile.jpg")
-        storageReference.putFile(imageUri!!)
-            .addOnSuccessListener {
+        val storageReference= FirebaseStorage.getInstance().getReference("Profile").child(currentUserUid).child("Profile.jpg")
+        storageReference.putFile(imageUri!!).addOnSuccessListener {
                 storageReference.downloadUrl
                     .addOnSuccessListener {
                         storingUserData(it)

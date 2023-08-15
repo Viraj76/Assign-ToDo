@@ -29,6 +29,7 @@ class SignInActivity : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener { loggingUser() }
         binding.tvSignUp.setOnClickListener { goingToSignUpActivity() }
+        binding.tvForgotPassword.setOnClickListener { Toast.makeText(this,"Soon, it will be implemented",Toast.LENGTH_SHORT).show() }
 
     }
 
@@ -42,8 +43,6 @@ class SignInActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
-
-
         if (email.isNotEmpty() && password.isNotEmpty()) {
 
             firebaseAuth.signInWithEmailAndPassword(email, password)

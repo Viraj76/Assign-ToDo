@@ -69,7 +69,6 @@ class EmployeeMainActivity : AppCompatActivity() {
                                         worksAdapter.setWorkList(empWork)
 
                                     }
-
                                     override fun onCancelled(error: DatabaseError) {
                                         Config.hideDialog()
                                         Toast.makeText(
@@ -85,16 +84,12 @@ class EmployeeMainActivity : AppCompatActivity() {
                         }
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Config.hideDialog()
                     Toast.makeText(this@EmployeeMainActivity, error.message, Toast.LENGTH_SHORT)
                         .show()
                 }
-
             })
-
-
     }
 
     private fun prepareRvForMainActivity() {
@@ -151,7 +146,6 @@ class EmployeeMainActivity : AppCompatActivity() {
             }
             .show()
             .setCancelable(false)
-
     }
 
 //    val bossShPre = getSharedPreferences("Boss Id", MODE_PRIVATE)

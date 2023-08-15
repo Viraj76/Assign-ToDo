@@ -93,7 +93,6 @@ class AssignActivity : AppCompatActivity() {
             else if(binding.tvDate.text.toString() == "Last Date") Toast.makeText(this@AssignActivity,"Select a last date",Toast.LENGTH_SHORT).show()
             else{
                 val assignedWork = AssignedWork(workTitle,workSubTitle,workDesc,priority,date)
-
                 empId = intent.getStringExtra("EmpId").toString()
                 val empName = intent.getStringExtra("EmpName")
                 workRoom = currentUserId + empId

@@ -7,5 +7,4 @@ data class AssignedWork(
     val workPriority : String? = null,
     val workLastDate : String? = null,
     var isExpandable : Boolean=false,
-
     )

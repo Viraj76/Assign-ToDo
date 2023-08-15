@@ -1,20 +1,15 @@
 package com.example.assigntodo
 
 import android.content.Intent
-import android.os.Binder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.BoringLayout.make
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assigntodo.adapter.BossMainActivityAdapter
 import com.example.assigntodo.auth.SignInActivity
 import com.example.assigntodo.databinding.ActivityBossMainBinding
-import com.example.assigntodo.models.Boss
 import com.example.assigntodo.models.Employees
 import com.example.assigntodo.utils.Config
 import com.google.firebase.auth.FirebaseAuth
@@ -25,7 +20,6 @@ class BossMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBossMainBinding
     private lateinit var bossMainActivityAdapter: BossMainActivityAdapter
     private lateinit var empDb : DatabaseReference
-    private lateinit var toolBar:Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBossMainBinding.inflate(layoutInflater)
@@ -72,7 +66,6 @@ class BossMainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         return when (item.itemId) {
             R.id.logOut -> {
                 val builder = AlertDialog.Builder(this)
